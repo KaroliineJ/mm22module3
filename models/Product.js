@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: String,
-  images: [String],
-  sizes: [String],
-  colors: [String],
-  createdAt: { type: Date, default: Date.now }
+  nimi: { type: String, required: true },
+  kirjeldus: String,
+  pildid: [String],
+  suurused: [String],
+  varvid: [String]
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.models.Product || mongoose.model('Product', productSchema);

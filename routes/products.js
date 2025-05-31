@@ -1,6 +1,6 @@
 const express = require('express');
-const Product = require('../models/Product');
 const router = express.Router();
+const Product = require('../models/Product');  // ainult import
 
 // Lisa uus toode
 router.post('/', async (req, res) => {
@@ -39,19 +39,5 @@ router.delete('/:id', async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-
-const mongoose = require('mongoose');
-
-const productSchema = new mongoose.Schema({
-  nimi: { type: String, required: true },
-  kirjeldus: String,
-  pildid: [String],
-  suurused: [String],
-  varvid: [String]
-}, {
-  timestamps: true
-});
-
-module.exports = mongoose.model('Product', productSchema);
 
 module.exports = router;

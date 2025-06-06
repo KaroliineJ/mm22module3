@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  nimi: { type: String, required: true },
-  hind: { type: Number, required: true },
-  kirjeldus: String,
-  pilt: String,
-  kategooria: String,
+  name: String,
+  price: Number,
+  category: String,
+  description: String,
+  images: [String],
+  sizes: [String], // ainult kui tootel on suurused
 });
 
 module.exports = mongoose.model('Product', productSchema);

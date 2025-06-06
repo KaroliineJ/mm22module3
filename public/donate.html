@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Annetused</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- NAVIGAATOR -->
+  <div id="nav-container"></div>
+
+  <!-- Ülemine pruun päis -->
+  <div class="bg-[#281900] text-white px-8 md:px-[160px] py-20 text-left">
+    <h1 class="text-3xl font-bold mb-2">Aita säilitada Adavere tuuliku lugu</h1>
+    <p>Sinu annetus aitab meil korraldada haridusprogramme, hooldada hoonet ja avada uksi uutele põlvkondadele.</p>
+    <a href="#annetus" class="inline-block mt-6 bg-[#c2d5c2] text-black px-6 py-3 font-semibold hover:bg-[#b2c3b2]">ANNETA KOHE</a>
+  </div>
+
+  <!-- Miks toetada -->
+  <section class="text-center py-16 px-4">
+    <h2 class="text-2xl font-semibold mb-10">Miks toetada?</h2>
+    <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div class="bg-[#e5dbcd] p-6 rounded-lg shadow-sm hover:shadow-md transition">
+        <div class="text-3xl mb-2">📖</div>
+        <p class="font-medium">Haridusprogrammid lastele</p>
+      </div>
+      <div class="bg-[#e5dbcd] p-6 rounded-lg shadow-sm hover:shadow-md transition">
+        <div class="text-3xl mb-2">🛠️</div>
+        <p class="font-medium">Hooldustööd ja renoveerimine</p>
+      </div>
+      <div class="bg-[#e5dbcd] p-6 rounded-lg shadow-sm hover:shadow-md transition">
+        <div class="text-3xl mb-2">🎨</div>
+        <p class="font-medium">Kultuuri- ja käsitööüritused</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Annetusvorm -->
+  <section id="annetus" class="bg-[#fdfaf4] py-20">
+    <div class="max-w-4xl mx-auto px-4 md:px-8">
+      <div class="bg-white shadow-lg rounded-2xl p-10 md:p-14">
+        <h2 class="text-3xl font-bold mb-8 text-center">Tee annetus</h2>
+
+        <form class="space-y-8">
+          <!-- Summa valik -->
+          <div>
+            <label class="block text-lg font-medium mb-3">Vali annetus:</label>
+            <div class="flex flex-wrap gap-4">
+              <button type="button" onclick="selectAmount(10)" class="amount-btn">10 €</button>
+              <button type="button" onclick="selectAmount(25)" class="amount-btn">25 €</button>
+              <button type="button" onclick="selectAmount(50)" class="amount-btn">50 €</button>
+              <input type="number" id="custom-amount" placeholder="Muu summa" class="border border-gray-300 rounded px-4 py-2 w-40" />
+            </div>
+          </div>
+
+          <!-- Makseviis -->
+          <div>
+            <label class="block text-lg font-medium mb-3">Makseviis:</label>
+            <select class="w-full border border-gray-300 px-4 py-2 rounded">
+              <option>Pangalink</option>
+              <option>Arve e-postile</option>
+            </select>
+          </div>
+
+          <!-- Annetuse tüüp -->
+          <div>
+            <label class="block text-lg font-medium mb-3">Tüüp:</label>
+            <div class="flex gap-6">
+              <label class="flex items-center gap-2 text-sm font-medium"><input type="radio" name="type" checked /> Ühekordne</label>
+              <label class="flex items-center gap-2 text-sm font-medium"><input type="radio" name="type" /> Igakuine</label>
+            </div>
+          </div>
+
+          <!-- Annetamise nupp -->
+          <div class="text-center">
+            <button type="submit" class="bg-[#a0522d] hover:bg-[#8b4513] text-white px-8 py-4 rounded-lg text-lg font-semibold shadow-md">Annan oma toetuse</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="footer-container"></div>
+
+  <!-- JS -->
+  <script src="js/include.js"></script>
+  <script>
+    function selectAmount(val) {
+      document.getElementById('custom-amount').value = val;
+    }
+  </script>
+
+  <style>
+    .amount-btn {
+      background-color: #f5f5f5;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .amount-btn:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</body>
+</html>

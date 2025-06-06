@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toote info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-white text-[#1a1a1a] font-sans">
+
+  <!-- Nav -->
+  <div id="nav-container"></div>
+
+  <!-- Hero -->
+  <div class="bg-[#281900] text-white px-4 md:px-[160px] py-10 text-left">
+    <a href="javascript:history.back()" class="text-white text-3xl">&#8592;</a>
+  </div>
+
+  <!-- Peasisu -->
+  <main class="px-4 md:px-[160px] py-20 bg-white">
+    <div class="grid grid-cols-12 gap-12 max-w-7xl mx-auto">
+
+      <!-- Vasak pool: pildid -->
+      <div class="col-span-12 md:col-span-6 flex gap-6 items-start">
+        <div class="flex flex-col gap-4 w-24">
+          <img id="thumb-1" src="assets/toode1selg.jpg" alt="Tagant" class="w-full aspect-square object-cover border rounded cursor-pointer" />
+          <img id="thumb-2" src="assets/toode1plt.PNG" alt="Eest" class="w-full aspect-square object-cover border rounded cursor-pointer" />
+        </div>
+        <div class="flex-1 max-w-xl">
+          <img id="product-image" src="assets/toode1.jpg" alt="Peapilt" class="w-full aspect-square object-cover border rounded" />
+        </div>
+      </div>
+
+      <!-- Parem pool: info -->
+      <div class="col-span-12 md:col-span-6 flex flex-col gap-6">
+        <div>
+          <h1 id="product-title" class="text-3xl font-semibold mb-2">Tootenimi</h1>
+          <p id="product-price" class="text-2xl font-bold text-[#e63946] mb-4">Hind €</p>
+          <p id="product-description" class="text-base leading-relaxed text-[#333]">Kirjeldus</p>
+        </div>
+
+        <div class="space-y-4">
+          <div id="size-section">
+            <label for="size" class="block text-sm font-medium mb-1 uppercase">Suurus</label>
+            <select id="size" class="w-full border border-gray-400 px-4 py-2 bg-gray-100">
+              <option>vali suurus</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="quantity" class="block text-sm font-medium mb-1 uppercase">Kogus</label>
+            <input type="number" id="quantity" value="1" class="w-full border border-gray-400 px-4 py-2 bg-gray-100">
+          </div>
+
+          <button class="bg-[#e63946] hover:bg-[#c92e3a] text-white w-full py-3 mt-2 uppercase font-semibold tracking-wide">
+            Lisa korvi
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Akordionid -->
+  <section class="px-4 md:px-[160px] pb-20">
+    <div class="max-w-7xl mx-auto space-y-4">
+      <div class="border-b">
+        <button onclick="toggleAccordion('kirjeldus')" class="w-full py-4 text-left text-sm font-semibold flex justify-between items-center">
+          Kirjeldus <span>+</span>
+        </button>
+        <div id="kirjeldus" class="hidden pb-4 text-gray-600 text-sm">Siin on põhjalik kirjeldus tootest.</div>
+      </div>
+      <div class="border-b">
+        <button onclick="toggleAccordion('detailid')" class="w-full py-4 text-left text-sm font-semibold flex justify-between items-center">
+          Detailid & info <span>+</span>
+        </button>
+        <div id="detailid" class="hidden pb-4 text-gray-600 text-sm">Materjalid, mõõdud, hooldusinfo jne.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Skriptid -->
+  <script src="js/include.js"></script>
+  <script>
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle("hidden");
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      if (!id) return;
+
+      try {
+        const res = await fetch(`http://localhost:4000/api/products/${id}`);
+        const product = await res.json();
+
+        document.getElementById("product-title").textContent = product.nimi;
+        document.getElementById("product-price").textContent = product.hind + " €";
+        document.getElementById("product-description").textContent = product.kirjeldus;
+        document.getElementById("product-image").src = product.pildid?.[0] || "assets/default.jpg";
+
+        // Thumbnailide uuendus kui olemas
+        if (product.pildid?.[1]) document.getElementById("thumb-1").src = product.pildid[1];
+        if (product.pildid?.[2]) document.getElementById("thumb-2").src = product.pildid[2];
+
+        // Suuruste peitmine kui puudub
+        if (!product.suurused || product.suurused.length === 0) {
+          document.getElementById("size-section").style.display = "none";
+        } else {
+          const select = document.getElementById("size");
+          product.suurused.forEach(s => {
+            const option = document.createElement("option");
+            option.value = s;
+            option.textContent = s;
+            select.appendChild(option);
+          });
+        }
+
+      } catch (err) {
+        console.error("Toote andmete laadimine ebaõnnestus:", err);
+      }
+
+      // Pildivahetus thumb klikiga
+      document.getElementById("thumb-1").onclick = () => {
+        document.getElementById("product-image").src = document.getElementById("thumb-1").src;
+      };
+      document.getElementById("thumb-2").onclick = () => {
+        document.getElementById("product-image").src = document.getElementById("thumb-2").src;
+      };
+    });
+  </script>
+</body>
+</html>

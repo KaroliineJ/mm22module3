@@ -1,31 +1,16 @@
-// server.js
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const productRoutes = require('./routes/products');
-
+const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Serveeri public kausta
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Ühenda MongoDB üks kord
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Ühendus MongoDB-ga edukas"))
-  .catch((err) => console.error("❌ MongoDB ühenduse viga:", err));
-
-// Route testimiseks
+// Kui tahad testida, kas kõik töötab:
 app.get('/', (req, res) => {
-  res.send('Backend server töötab!');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// API route'd
-app.use('/api/products', productRoutes);
-
-// Server käima
-app.listen(port, () => {
-  console.log(`🚀 Server töötab pordil ${port}`);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`✅ Server töötab pordil ${PORT}`);
 });

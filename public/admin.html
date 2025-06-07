@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Tooted</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f8f6ee] p-10">
+
+  <h1 class="text-2xl font-bold mb-6">Lisa uus toode</h1>
+  <form id="productForm" accept-charset="UTF-8" class="space-y-4 max-w-xl mb-12">
+    <input type="text" name="nimi" placeholder="Toote nimi" class="w-full border px-4 py-2">
+    <textarea name="kirjeldus" placeholder="Kirjeldus" class="w-full border px-4 py-2"></textarea>
+    <input type="number" name="hind" placeholder="Hind (€)" class="w-full border px-4 py-2">
+    <input type="text" name="materjal" placeholder="Materjal" class="w-full border px-4 py-2">
+    <input type="text" name="pilt1" placeholder="Pildi URL" class="w-full border px-4 py-2">
+    <input type="text" name="pilt2" placeholder="Teise pildi URL (soovi korral)" class="w-full border px-4 py-2">
+    <input type="text" name="kategooria" placeholder="Kategooria" class="w-full border px-4 py-2">
+    <button type="submit" class="bg-[#281900] text-white px-6 py-2 rounded">Salvesta</button>
+  </form>
+
+  <h2 class="text-xl font-semibold mb-4">Olemasolevad tooted</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100 text-left">
+          <th class="p-3 border">Nimi</th>
+          <th class="p-3 border">Hind</th>
+          <th class="p-3 border">Kategooria</th>
+          <th class="p-3 border">Tegevused</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody">
+        <!-- JS lisab siia read -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // TOOTE LISAMINE
+    document.getElementById("productForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      data.pildid = [data.pilt1];
+      if (data.pilt2) data.pildid.push(data.pilt2);
+      delete data.pilt1;
+      delete data.pilt2;
+
+      const res = await fetch("http://localhost:4000/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        alert("Toode salvestatud!");
+        e.target.reset();
+        laeTooted();
+      } else {
+        alert("Midagi läks valesti.");
+      }
+    });
+
+    // TOODETE LAADIMINE TABELISSE
+    async function laeTooted() {
+      const res = await fetch("http://localhost:4000/api/products");
+      const tooted = await res.json();
+      const tbody = document.getElementById("productTableBody");
+      tbody.innerHTML = "";
+
+      tooted.forEach(toode => {
+        const rida = document.createElement("tr");
+
+        rida.innerHTML = `
+          <td class="border px-4 py-2">${toode.nimi || "-"}</td>
+          <td class="border px-4 py-2">${toode.hind || "-"}</td>
+          <td class="border px-4 py-2">${toode.kategooria || "-"}</td>
+          <td class="border px-4 py-2">
+            <button onclick="kustutaToode('${toode._id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Kustuta</button>
+          </td>
+        `;
+        tbody.appendChild(rida);
+      });
+    }
+
+    // TOOTE KUSTUTAMINE
+    async function kustutaToode(id) {
+      if (!confirm("Kas oled kindel, et soovid selle kustutada?")) return;
+      await fetch(`http://localhost:4000/api/products/${id}`, { method: "DELETE" });
+      laeTooted();
+    }
+
+    laeTooted();
+  </script>
+
+</body>
+</html>

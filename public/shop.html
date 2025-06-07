@@ -6,40 +6,7 @@
   <title>E-pood</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
   <link rel="stylesheet" href="css/style.css" />
-
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const filterButtons = document.querySelectorAll("button");
-    const cards = document.querySelectorAll(".group");
-
-    filterButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const filter = btn.textContent.trim();
-        cards.forEach(card => {
-          const category = card.querySelector("span").textContent.trim();
-          if (filter === "Kõik" || category === filter) {
-            card.style.display = "block";
-          } else {
-            card.style.display = "none";
-          }
-        });
-      });
-    });
-
-    // Ava detailleht kui klikitakse tootenimele
-    cards.forEach(card => {
-      const title = card.querySelector("h3");
-      title.style.cursor = "pointer";
-      title.addEventListener("click", () => {
-        const name = title.textContent.trim();
-        const urlName = encodeURIComponent(name);
-        window.location.href = `detail.html?name=${urlName}`;
-      });
-    });
-  });
-</script>
 
 </head>
 <body>
@@ -64,131 +31,8 @@
   </div>
 
   <!-- Tootevõrgustik -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 px-4 md:px-[160px] py-16 bg-[#F8F6EE]">
-    <!-- Tootekaardid -->
-    <!-- Korrata nii palju kui vaja -->
-    <!-- ÜKS näidis kaart, mida saad kopeerida -->
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil ja kangas</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">2 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-    <!-- Lisa siia rohkem kaarte kopeerides selle struktuuri -->
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Kirjatarbed</span>
-      <img src="/assets/toode2.PNG" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Logoga pastakas</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">2 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Puidust meened</span>
-      <img src="/assets/toode3.PNG" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Graveeritud käsitöö lõikelaud</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
-      <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">Tekstiil</span>
-      <img src="/assets/toode1.jpg" alt="Toode 1" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
-      <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">Käsitöö kott</h3>
-          <p class="text-sm text-gray-600">Käsitsi valmistatud, Adaveres disainitud.</p>
-        </div>
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-[#1a1a1a]">35 €</span>
-          <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
-        </div>
-      </div>
-    </div>
-
+  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 px-4 md:px-[160px] py-16 bg-[#F8F6EE]">
+    <!-- Tooted tulevad siia JS abil -->
   </div>
 
   <!-- Footer konteiner -->
@@ -196,5 +40,49 @@
 
   <!-- JS fail nav ja footer laadimiseks -->
   <script src="js/include.js"></script>
+
+  <!-- DÜNAAMILINE TOODETE LAADIMINE -->
+  <script>
+    async function laadimine() {
+      const res = await fetch("http://localhost:4000/api/products");
+      const tooted = await res.json();
+      const grid = document.getElementById("product-grid");
+
+      tooted.forEach(toode => {
+        const html = `
+          <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+            <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">${toode.kategooria || "Toode"}</span>
+            <img src="${toode.pildid?.[0] || '/assets/placeholder.jpg'}" alt="${toode.nimi}" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">${toode.nimi}</h3>
+                <p class="text-sm text-gray-600">${toode.kirjeldus?.slice(0, 60) || "Kirjeldus puudub"}...</p>
+              </div>
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-lg font-bold text-[#1a1a1a]">${toode.hind} €</span>
+                <button class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-3 py-1 rounded transition">Lisa korvi</button>
+              </div>
+            </div>
+          </div>`;
+        grid.insertAdjacentHTML("beforeend", html);
+      });
+
+      // FILTREERIMINE
+      const filterButtons = document.querySelectorAll("button");
+      const cards = document.querySelectorAll(".group");
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const filter = btn.textContent.trim();
+          cards.forEach(card => {
+            const category = card.querySelector("span").textContent.trim();
+            card.style.display = (filter === "Kõik" || category === filter) ? "block" : "none";
+          });
+        });
+      });
+    }
+
+    laadimine();
+  </script>
 </body>
 </html>

@@ -4,6 +4,9 @@ const cors = require("cors");
 const path = require("path");
 const productRoutes = require("./routes/products");
 require("dotenv").config(); // .env failist muutujad
+const contactRoutes = require("./routes/contact");
+
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -16,8 +19,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public")));
 
 
+
 // API route
 app.use("/api/products", productRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Kontrollime, kas URI olemas
 if (!MONGO_URI) {

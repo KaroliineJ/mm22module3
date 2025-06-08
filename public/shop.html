@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="et">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
   <div id="nav-container"></div>
@@ -30,7 +32,8 @@
   </div>
 
   <!-- Tootevõrgustik -->
-  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 px-4 md:px-[160px] py-16 bg-[#F8F6EE]">
+  <div id="product-grid"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 px-4 md:px-[160px] py-16 bg-[#F8F6EE]">
     <!-- Tooted tulevad siia JS abil -->
   </div>
 
@@ -39,19 +42,22 @@
 
   <!-- DÜNAAMILINE TOODETE LAADIMINE -->
   <script>
-  async function laadimine() {
-    const res = await fetch("http://localhost:4000/api/products");
-    const tooted = await res.json();
-    const grid = document.getElementById("product-grid");
+    async function laadimine() {
+      const res = await fetch("http://localhost:4000/api/products");
+      const tooted = await res.json();
+      const grid = document.getElementById("product-grid");
 
-  tooted.forEach(toode => {
-  const html = `
+      tooted.forEach(toode => {
+        const html = `
     <div class="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
       <span class="absolute top-4 left-4 bg-[#281900] text-white text-xs px-3 py-1 rounded-full">${toode.category || "Toode"}</span>
       <img src="${toode.images?.[0] || '/assets/placeholder.jpg'}" alt="${toode.name}" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
       <div class="p-5 space-y-2 min-h-[180px] flex flex-col justify-between">
         <div>
-          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">${toode.name}</h3>
+          <h3 class="text-lg font-semibold text-[#1a1a1a] group-hover:underline">
+         <a href="detail.html?id=${toode._id}">${toode.name}</a>
+          </h3>
+
           <p class="text-sm text-gray-600">${toode.description?.slice(0, 60) || "Kirjeldus puudub"}...</p>
         </div>
         <div class="flex justify-between items-center pt-2">
@@ -60,28 +66,29 @@
         </div>
       </div>
     </div>`;
-  grid.insertAdjacentHTML("beforeend", html);
-});
+        grid.insertAdjacentHTML("beforeend", html);
+      });
 
-    // FILTREERIMINE
-    const filterButtons = document.querySelectorAll("button");
-    const cards = document.querySelectorAll(".group");
+      // FILTREERIMINE
+      const filterButtons = document.querySelectorAll("button");
+      const cards = document.querySelectorAll(".group");
 
-    filterButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const filter = btn.textContent.trim();
-        cards.forEach(card => {
-          const category = card.querySelector("span").textContent.trim();
-          card.style.display = (filter === "Kõik" || category === filter) ? "block" : "none";
+      filterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const filter = btn.textContent.trim();
+          cards.forEach(card => {
+            const category = card.querySelector("span").textContent.trim();
+            card.style.display = (filter === "Kõik" || category === filter) ? "block" : "none";
+          });
         });
       });
-    });
-  }
+    }
 
-  laadimine();
-</script>
+    laadimine();
+  </script>
 
-  
+
 
 </body>
+
 </html>

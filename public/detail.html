@@ -21,11 +21,11 @@
       <!-- Vasak pool -->
       <div class="col-span-12 md:col-span-6 flex gap-6 items-start">
         <div class="flex flex-col gap-4 w-24">
-          <img id="thumb-1" src="assets/toode1selg.jpg" alt="Tagant" class="w-full aspect-square object-cover border rounded cursor-pointer" />
-          <img id="thumb-2" src="assets/toode1plt.PNG" alt="Eest" class="w-full aspect-square object-cover border rounded cursor-pointer" />
+          <img id="thumb-1" src="/assets/placeholder.jpg" alt="Pilt 1" class="w-full aspect-square object-cover border rounded cursor-pointer" />
+          <img id="thumb-2" src="/assets/placeholder.jpg" alt="Pilt 2" class="w-full aspect-square object-cover border rounded cursor-pointer" />
         </div>
         <div class="flex-1 max-w-xl">
-          <img id="product-image" src="assets/toode1.jpg" alt="Peapilt" class="w-full aspect-square object-cover border rounded" />
+          <img id="product-image" src="/assets/placeholder.jpg" alt="Peapilt" class="w-full aspect-square object-cover border rounded" />
         </div>
       </div>
 
@@ -96,16 +96,19 @@
         document.getElementById("product-title").textContent = product.name;
         document.getElementById("product-price").textContent = product.price + " €";
         document.getElementById("product-description").textContent = product.description;
-        document.getElementById("product-image").src = product.images?.[0] || "assets/default.jpg";
+        document.getElementById("product-image").src = product.images?.[0] || "/assets/placeholder.jpg";
 
-        if (product.images?.[1]) document.getElementById("thumb-1").src = product.images[1];
-        if (product.images?.[2]) document.getElementById("thumb-2").src = product.images[2];
+        // Thumbnailid
+        if (product.images?.[0]) document.getElementById("thumb-1").src = product.images[0];
+        if (product.images?.[1]) document.getElementById("thumb-2").src = product.images[1];
 
-        if (!product.sizes || product.sizes.length === 0) {
+        // Suurused
+        const sizes = product.sizes || product.suurused;
+        if (!sizes || sizes.length === 0) {
           document.getElementById("size-section").style.display = "none";
         } else {
           const select = document.getElementById("size");
-          product.sizes.forEach(s => {
+          sizes.forEach(s => {
             const option = document.createElement("option");
             option.value = s;
             option.textContent = s;
@@ -113,17 +116,17 @@
           });
         }
 
+        // Thumbid klikitavaks
+        document.getElementById("thumb-1").onclick = () => {
+          document.getElementById("product-image").src = document.getElementById("thumb-1").src;
+        };
+        document.getElementById("thumb-2").onclick = () => {
+          document.getElementById("product-image").src = document.getElementById("thumb-2").src;
+        };
+
       } catch (err) {
         console.error("Toote andmete laadimine ebaõnnestus:", err);
       }
-
-      // Pildi muutmine klikiga
-      document.getElementById("thumb-1").onclick = () => {
-        document.getElementById("product-image").src = document.getElementById("thumb-1").src;
-      };
-      document.getElementById("thumb-2").onclick = () => {
-        document.getElementById("product-image").src = document.getElementById("thumb-2").src;
-      };
     });
   </script>
 </body>

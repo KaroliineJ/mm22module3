@@ -45,20 +45,22 @@ router.post("/", upload.array("pildid"), async (req, res) => {
     const body = req.body;
 
     const product = new Product({
-      name: body.name,
-      description: body.description,
-      price: parseFloat(body.price),
-      material: body.material,
-      category: body.category,
+      name: body.nimi,
+      description: body.kirjeldus,
+      price: parseFloat(body.hind),
+      material: body.materjal,
+      category: body.kategooria,
       images: imagePaths
     });
 
     await product.save();
     res.status(201).json(product);
   } catch (err) {
+    console.error(err); // Lisa logi
     res.status(400).json({ error: "Salvestamine ebaõnnestus" });
   }
 });
+
 
 // DELETE
 router.delete("/:id", async (req, res) => {

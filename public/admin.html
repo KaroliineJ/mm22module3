@@ -6,20 +6,22 @@
   <title>Admin – Tooted</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#f8f6ee] p-10">
+<body class="bg-[#f8f6ee] p-10 font-sans">
 
   <h1 class="text-2xl font-bold mb-6">Lisa uus toode</h1>
+
   <form id="productForm" enctype="multipart/form-data" class="space-y-4 max-w-xl mb-12">
-    <input type="text" name="nimi" placeholder="Toote nimi" required class="w-full border px-4 py-2">
-    <textarea name="kirjeldus" placeholder="Kirjeldus" required class="w-full border px-4 py-2"></textarea>
-    <input type="number" name="hind" placeholder="Hind (€)" required class="w-full border px-4 py-2">
-    <input type="text" name="materjal" placeholder="Materjal" required class="w-full border px-4 py-2">
-    <input type="file" name="pildid" multiple accept="image/*" class="w-full border px-4 py-2">
-    <input type="text" name="kategooria" placeholder="Kategooria" required class="w-full border px-4 py-2">
-    <button type="submit" class="bg-[#281900] text-white px-6 py-2 rounded">Salvesta</button>
+    <input type="text" name="name" placeholder="Toote nimi" required class="w-full border px-4 py-2">
+    <textarea name="description" placeholder="Kirjeldus" required class="w-full border px-4 py-2"></textarea>
+    <input type="number" name="price" placeholder="Hind (€)" required class="w-full border px-4 py-2">
+    <input type="text" name="material" placeholder="Materjal" class="w-full border px-4 py-2">
+    <input type="file" name="images" multiple accept="image/*" class="w-full border px-4 py-2">
+    <input type="text" name="category" placeholder="Kategooria" required class="w-full border px-4 py-2">
+    <button type="submit" class="text-sm bg-[#a0522d] hover:bg-[#804020] text-white px-4 py-2 rounded transition">Salvesta</button>
   </form>
 
   <h2 class="text-xl font-semibold mb-4">Olemasolevad tooted</h2>
+
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border border-gray-200">
       <thead>
@@ -35,7 +37,7 @@
   </div>
 
   <script>
-    // TOOTE LISAMINE
+    // Lisa uus toode
     document.getElementById("productForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const form = e.target;
@@ -44,23 +46,23 @@
       try {
         const res = await fetch("http://localhost:4000/api/products", {
           method: "POST",
-          body: formData,
+          body: formData
         });
 
         if (res.ok) {
-          alert("Toode salvestatud!");
+          alert("✅ Toode salvestatud!");
           form.reset();
           laeTooted();
         } else {
           const error = await res.json();
-          alert("Midagi läks valesti: " + (error?.error || res.status));
+          alert("❌ Midagi läks valesti: " + (error?.error || res.status));
         }
       } catch (err) {
-        alert("Võrguviga: " + err.message);
+        alert("❌ Võrguviga: " + err.message);
       }
     });
 
-    // TOODETE LAADIMINE
+    // Lae olemasolevad tooted
     async function laeTooted() {
       const res = await fetch("http://localhost:4000/api/products");
       const tooted = await res.json();
@@ -70,17 +72,18 @@
       tooted.forEach(toode => {
         const rida = document.createElement("tr");
         rida.innerHTML = `
-          <td class="border px-4 py-2">${toode.name || toode.nimi || "-"}</td>
-          <td class="border px-4 py-2">${toode.price || toode.hind || "-"}</td>
-          <td class="border px-4 py-2">${toode.category || toode.kategooria || "-"}</td>
+          <td class="border px-4 py-2">${toode.name || "-"}</td>
+          <td class="border px-4 py-2">${toode.price || "-"}</td>
+          <td class="border px-4 py-2">${toode.category || "-"}</td>
           <td class="border px-4 py-2">
-            <button onclick="kustutaToode('${toode._id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Kustuta</button>
+            <button onclick="kustutaToode('${toode._id}')" class="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition">Kustuta</button>
           </td>
         `;
         tbody.appendChild(rida);
       });
     }
 
+    // Kustuta toode
     async function kustutaToode(id) {
       if (!confirm("Kas oled kindel, et soovid selle kustutada?")) return;
       await fetch(`http://localhost:4000/api/products/${id}`, { method: "DELETE" });
@@ -89,5 +92,6 @@
 
     laeTooted();
   </script>
+
 </body>
 </html>

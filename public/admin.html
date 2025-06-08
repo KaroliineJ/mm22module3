@@ -9,14 +9,13 @@
 <body class="bg-[#f8f6ee] p-10">
 
   <h1 class="text-2xl font-bold mb-6">Lisa uus toode</h1>
-  <form id="productForm" accept-charset="UTF-8" class="space-y-4 max-w-xl mb-12">
-    <input type="text" name="nimi" placeholder="Toote nimi" class="w-full border px-4 py-2">
-    <textarea name="kirjeldus" placeholder="Kirjeldus" class="w-full border px-4 py-2"></textarea>
-    <input type="number" name="hind" placeholder="Hind (€)" class="w-full border px-4 py-2">
-    <input type="text" name="materjal" placeholder="Materjal" class="w-full border px-4 py-2">
-    <input type="text" name="pilt1" placeholder="Pildi URL" class="w-full border px-4 py-2">
-    <input type="text" name="pilt2" placeholder="Teise pildi URL (soovi korral)" class="w-full border px-4 py-2">
-    <input type="text" name="kategooria" placeholder="Kategooria" class="w-full border px-4 py-2">
+  <form id="productForm" enctype="multipart/form-data" class="space-y-4 max-w-xl mb-12">
+    <input type="text" name="nimi" placeholder="Toote nimi" required class="w-full border px-4 py-2">
+    <textarea name="kirjeldus" placeholder="Kirjeldus" required class="w-full border px-4 py-2"></textarea>
+    <input type="number" name="hind" placeholder="Hind (€)" required class="w-full border px-4 py-2">
+    <input type="text" name="materjal" placeholder="Materjal" required class="w-full border px-4 py-2">
+    <input type="file" name="pildid" multiple accept="image/*" class="w-full border px-4 py-2">
+    <input type="text" name="kategooria" placeholder="Kategooria" required class="w-full border px-4 py-2">
     <button type="submit" class="bg-[#281900] text-white px-6 py-2 rounded">Salvesta</button>
   </form>
 
@@ -31,9 +30,7 @@
           <th class="p-3 border">Tegevused</th>
         </tr>
       </thead>
-      <tbody id="productTableBody">
-        <!-- JS lisab siia read -->
-      </tbody>
+      <tbody id="productTableBody"></tbody>
     </table>
   </div>
 
@@ -41,29 +38,29 @@
     // TOOTE LISAMINE
     document.getElementById("productForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
-      data.pildid = [data.pilt1];
-      if (data.pilt2) data.pildid.push(data.pilt2);
-      delete data.pilt1;
-      delete data.pilt2;
+      const form = e.target;
+      const formData = new FormData(form);
 
-      const res = await fetch("http://localhost:4000/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      try {
+        const res = await fetch("http://localhost:4000/api/products", {
+          method: "POST",
+          body: formData,
+        });
 
-      if (res.ok) {
-        alert("Toode salvestatud!");
-        e.target.reset();
-        laeTooted();
-      } else {
-        alert("Midagi läks valesti.");
+        if (res.ok) {
+          alert("Toode salvestatud!");
+          form.reset();
+          laeTooted();
+        } else {
+          const error = await res.json();
+          alert("Midagi läks valesti: " + (error?.error || res.status));
+        }
+      } catch (err) {
+        alert("Võrguviga: " + err.message);
       }
     });
 
-    // TOODETE LAADIMINE TABELISSE
+    // TOODETE LAADIMINE
     async function laeTooted() {
       const res = await fetch("http://localhost:4000/api/products");
       const tooted = await res.json();
@@ -72,11 +69,10 @@
 
       tooted.forEach(toode => {
         const rida = document.createElement("tr");
-
         rida.innerHTML = `
-          <td class="border px-4 py-2">${toode.nimi || "-"}</td>
-          <td class="border px-4 py-2">${toode.hind || "-"}</td>
-          <td class="border px-4 py-2">${toode.kategooria || "-"}</td>
+          <td class="border px-4 py-2">${toode.name || toode.nimi || "-"}</td>
+          <td class="border px-4 py-2">${toode.price || toode.hind || "-"}</td>
+          <td class="border px-4 py-2">${toode.category || toode.kategooria || "-"}</td>
           <td class="border px-4 py-2">
             <button onclick="kustutaToode('${toode._id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Kustuta</button>
           </td>
@@ -85,7 +81,6 @@
       });
     }
 
-    // TOOTE KUSTUTAMINE
     async function kustutaToode(id) {
       if (!confirm("Kas oled kindel, et soovid selle kustutada?")) return;
       await fetch(`http://localhost:4000/api/products/${id}`, { method: "DELETE" });
@@ -94,6 +89,5 @@
 
     laeTooted();
   </script>
-
 </body>
 </html>
